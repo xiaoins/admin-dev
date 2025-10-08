@@ -1,0 +1,137 @@
+spring:
+  application:
+    name: mall-admin
+
+  profiles:
+    active: dev
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/mall_admin?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: sulei1124
+
+  # Redis配置（临时禁用）
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: sulei1124
+      database: 0
+      timeout: 3000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+          max-wait: -1ms
+  redis:
+    enabled: false  # 临时禁用Redis
+
+  # 缓存配置（改为simple内存缓存）
+  cache:
+    type: simple  # 使用简单内存缓存替代Redis
+    redis:
+      time-to-live: 3600000 # 1小时
+
+  # Flyway配置
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    validate-on-migrate: false  # 临时禁用验证，允许应用启动
+    clean-disabled: false  # 允许清理数据库
+
+  # Jackson配置
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+    default-property-inclusion: non_null
+
+  # 文件上传配置
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 20MB
+
+# MyBatis Plus配置
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+  mapper-locations: classpath*:/mapper/**/*.xml
+
+# Knife4j配置
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
+
+# Actuator配置
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+
+# JWT配置
+jwt:
+  secret: YourSecretKeyForJWTTokenGenerationPleaseChangeInProduction
+  expiration: 7200000 # 2小时（毫秒）
+  header: Authorization
+  prefix: Bearer
+
+# 业务配置
+business:
+  # 订单配置
+  order:
+    timeout-minutes: 30 # 订单超时时间（分钟）
+    auto-receive-days: 7 # 自动收货时间（天）
+  
+  # 登录配置
+  login:
+    max-fail-count: 3 # 最大失败次数
+    lock-minutes: 30 # 锁定时间（分钟）
+  
+  # 文件上传配置
+  upload:
+    path: /data/upload/ # 上传路径
+    allowed-types: jpg,jpeg,png,gif,webp # 允许的文件类型
+    max-size: 2097152 # 最大文件大小（2MB）
+
+# 日志配置
+logging:
+  level:
+    root: INFO
+    com.xiaoins.admin: DEBUG
+    com.baomidou.mybatisplus: DEBUG
+  pattern:
+    console: "%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}"
+
+# 服务器配置
+server:
+  port: 8080
+  servlet:
+    context-path: /api/admin/v1
+  compression:
+    enabled: true
+
+# 文件存储配置
+file:
+  upload:
+    path: uploads  # 文件存储路径（相对路径）
+    domain: http://localhost:8080  # 访问域名
+

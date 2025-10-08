@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:mall_admin}?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=true
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:root}
+
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl
+
+logging:
+  level:
+    root: WARN
+    com.xiaoins.admin: INFO
+    com.baomidou.mybatisplus: WARN
+  file:
+    name: /var/log/mall-admin/application.log
+    max-size: 100MB
+    max-history: 30
+
